@@ -73,3 +73,42 @@ namespace TourFirmApp
         }
     }
 }
+
+<Window x:Class="TourFirmApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Информационная система туристической фирмы"
+        Height="360" Width="640" WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="30">
+        <TextBlock x:Name="WelcomeText" FontSize="22" FontWeight="Bold"
+                   TextWrapping="Wrap"/>
+        <TextBlock x:Name="RoleText" FontSize="16" Margin="0,10,0,0"/>
+        <Button Content="Выйти" Width="120" Height="32"
+                HorizontalAlignment="Left" Margin="0,30,0,0"
+                Click="LogoutButton_Click"/>
+    </StackPanel>
+</Window>
+
+using System.Windows;
+using TourFirmApp.DataBase;
+
+namespace TourFirmApp
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow(User user)
+        {
+            InitializeComponent();
+
+            WelcomeText.Text = $"Добро пожаловать, {user.FirstName} {user.MiddleName}!";
+            RoleText.Text = $"Ваша роль: {user.Role.Name}";
+        }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            AuthWindow auth = new AuthWindow();
+            auth.Show();
+            Close();
+        }
+    }
+}
