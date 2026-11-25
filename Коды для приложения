@@ -112,3 +112,17 @@ namespace TourFirmApp
         }
     }
 }
+
+set search_path to public;
+
+SELECT r.client_id,
+       COUNT(r.request_id),
+       SUM(t.price * r.quantity),
+       ROUND(SUM((t.price + COALESCE(s.price, 0)) * r.quantity
+           * (1 - COALESCE(d.percentage, 0) / 100)), 2)
+FROM request r
+JOIN tour t ON r.tour_id = t.tour_id
+LEFT JOIN services s ON t.service_id = s.service_id
+LEFT JOIN discount d ON r.discount_id = d.discount_id
+GROUP BY r.client_id
+ORDER BY r.client_id;
